@@ -1,0 +1,13 @@
+{
+  "name": "myapp",
+  "description": "a really cool app",
+  "version": "1.0.0",
+  "engines": {
+    "node": "10.3.0",
+    "npm": "6.x"
+  },
+  "scripts": {
+    "start": "node Server.js",
+    "postinstall": "npm install --save"
+  }
+}
