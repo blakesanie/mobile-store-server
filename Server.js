@@ -13,6 +13,11 @@ mongoose.connect(
   { useNewUrlParser: true, dbName: "storeIndex" }
 );
 
+app.get("/test/"),
+  (req, res) => {
+    res.send("working");
+  };
+
 app.get("/getproductsbycat/:category", (req, res) => {
   var category = req.params.category;
   //postProduct();
