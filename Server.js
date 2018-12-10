@@ -15,10 +15,7 @@ mongoose.connect(
   { useNewUrlParser: true, dbName: "storeIndex" }
 );*/
 
-app.get("/"),
-  (req, res) => {
-    res.status(300).send("working");
-  };
+app.get("/", (req, res) => res.send("Hello World!"));
 /*
 app.get("/getproductsbycat/:category", (req, res) => {
   var category = req.params.category;
