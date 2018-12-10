@@ -19,7 +19,6 @@ app.get("/", (req, res) => res.send("Hello World!"));
 
 app.get("/getproductsbycat/:category", (req, res) => {
   var category = req.params.category;
-  //postProduct();
   Product.find({ category: category })
     .exec()
     .then(docs => {
@@ -35,22 +34,50 @@ app.get("/getproductsbycat/:category", (req, res) => {
     });
 });
 
-async function postProduct() {
-  console.log(`Server listening on port ${port}!`);
+app.get("/postproduct", function(req, res) {
+  var {
+    name,
+    cat,
+    thumbUrl,
+    photos,
+    videos,
+    versions,
+    minPrice,
+    reviews
+  } = req.query;
+  photos = JSON.parse(photos);
+  videos = JSON.parse(videos);
+  versions = JSON.parse(versions);
+  reviews = JSON.parse(reviews);
+  postProduct(name, minPrice, thumbUrl, photos, videos, versions, reviews, cat);
+  res.send("hello world");
+});
+
+async function postProduct(
+  name,
+  minPrice,
+  thumbUrl,
+  photos,
+  videos,
+  versions,
+  reviews,
+  category
+) {
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
-    name: "Boosted Mini S",
-    minPrice: 600,
-    thumbUrl: "",
-    images: [],
-    videos: [],
-    versions: [],
-    reviews: [],
-    category: "gadgets"
+    name: name,
+    minPrice: minPrice,
+    thumbUrl: thumbUrl,
+    images: photos,
+    videos: videos,
+    versions: versions,
+    reviews: reviews,
+    category: category
   });
   product
     .save()
     .then(result => {
+      console.log("posted");
       console.log(result);
     })
     .catch(err => console.log(err));
