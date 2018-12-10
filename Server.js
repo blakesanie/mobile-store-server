@@ -17,7 +17,7 @@ mongoose.connect(
 
 app.get("/"),
   (req, res) => {
-    res.send("working");
+    res.status(300).send("working");
   };
 /*
 app.get("/getproductsbycat/:category", (req, res) => {
