@@ -16,7 +16,7 @@ mongoose.connect(
 );
 
 app.get("/", (req, res) => res.send("Hello World!"));
-/*
+
 app.get("/getproductsbycat/:category", (req, res) => {
   var category = req.params.category;
   //postProduct();
