@@ -7,7 +7,6 @@
     "npm": "6.x"
   },
   "scripts": {
-    "start": "node Server.js",
-    "postinstall": "npm install --save"
+    "start": "node Server.js"
   }
 }
