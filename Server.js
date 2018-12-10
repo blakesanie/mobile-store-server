@@ -55,4 +55,3 @@ async function postProduct() {
     })
     .catch(err => console.log(err));
 }
-*/
