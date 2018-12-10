@@ -1,19 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
 //const keys = require("./keys");
-//const Product = require("./Product.js");
+const Product = require("./Product.js");
 const app = express();
 const port = 3000;
 app.listen(process.env.PORT || port, () =>
   console.log("server running on port " + port)
 );
-/*
+
+process.env.MONGO_PASSWORD;
 mongoose.connect(
   "mongodb://bsanie:" +
     keys.adminPassword +
     "@mobilestore-shard-00-00-oardq.mongodb.net:27017,mobilestore-shard-00-01-oardq.mongodb.net:27017,mobilestore-shard-00-02-oardq.mongodb.net:27017/test?ssl=true&replicaSet=mobileStore-shard-0&authSource=admin&retryWrites=true",
   { useNewUrlParser: true, dbName: "storeIndex" }
-);*/
+);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 /*
