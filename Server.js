@@ -8,10 +8,9 @@ app.listen(process.env.PORT || port, () =>
   console.log("server running on port " + port)
 );
 
-process.env.MONGO_PASSWORD;
 mongoose.connect(
   "mongodb://bsanie:" +
-    keys.adminPassword +
+    process.env.MONGO_PASSWORD +
     "@mobilestore-shard-00-00-oardq.mongodb.net:27017,mobilestore-shard-00-01-oardq.mongodb.net:27017,mobilestore-shard-00-02-oardq.mongodb.net:27017/test?ssl=true&replicaSet=mobileStore-shard-0&authSource=admin&retryWrites=true",
   { useNewUrlParser: true, dbName: "storeIndex" }
 );
