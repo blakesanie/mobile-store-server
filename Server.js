@@ -13,7 +13,7 @@ mongoose.connect(
   { useNewUrlParser: true, dbName: "storeIndex" }
 );
 
-app.get("/test/"),
+app.get("/"),
   (req, res) => {
     res.send("working");
   };
