@@ -50,7 +50,7 @@ app.get("/postproduct", function(req, res) {
   versions = JSON.parse(versions);
   reviews = JSON.parse(reviews);
   postProduct(name, minPrice, thumbUrl, photos, videos, versions, reviews, cat);
-  res.send("hello world");
+  res.status(200).send("posted");
 });
 
 async function postProduct(
@@ -77,7 +77,7 @@ async function postProduct(
   product
     .save()
     .then(result => {
-      console.log("posted");
+      console.log("posted to Mongo");
       console.log(result);
     })
     .catch(err => console.log(err));
