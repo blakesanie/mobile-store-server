@@ -9,7 +9,8 @@ const schema = mongoose.Schema({
   videos: Array,
   versions: Array,
   reviews: Array,
-  category: String
+  category: String,
+  isGift: Boolean
 });
 
 module.exports = mongoose.model("Product", schema);

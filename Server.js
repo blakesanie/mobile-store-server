@@ -43,13 +43,24 @@ app.get("/postproduct", function(req, res) {
     videos,
     versions,
     minPrice,
-    reviews
+    reviews,
+    isGift
   } = req.query;
   photos = JSON.parse(photos);
   videos = JSON.parse(videos);
   versions = JSON.parse(versions);
   reviews = JSON.parse(reviews);
-  postProduct(name, minPrice, thumbUrl, photos, videos, versions, reviews, cat);
+  postProduct(
+    name,
+    minPrice,
+    thumbUrl,
+    photos,
+    videos,
+    versions,
+    reviews,
+    cat,
+    isGift
+  );
   res.status(200).send("posted");
 });
 
@@ -61,7 +72,8 @@ async function postProduct(
   videos,
   versions,
   reviews,
-  category
+  category,
+  isGift
 ) {
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
@@ -72,7 +84,8 @@ async function postProduct(
     videos: videos,
     versions: versions,
     reviews: reviews,
-    category: category
+    category: category,
+    isGift: isGift
   });
   product
     .save()
