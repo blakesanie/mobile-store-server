@@ -63,9 +63,9 @@ app.get("/getproductbyid/:id", (req, res) => {
 });
 
 app.get("/postproduct", function(req, res) {
-  res.send("posted");
-  //var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
-  //postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
+  //res.status(200).send("posted");
+  var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
+  postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
 });
 
 async function postProduct(
