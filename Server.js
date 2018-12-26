@@ -52,9 +52,9 @@ app.get("/getproductbyid/:id", (req, res) => {
 });
 
 app.get("/postproduct", function(req, res) {
-  var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
-  postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags);
-  res.status(200).send("posted");
+  res.send("posted");
+  //var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
+  //postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
 });
 
 async function postProduct(
@@ -64,7 +64,8 @@ async function postProduct(
   amazonUrl,
   price,
   isGift,
-  tags
+  tags,
+  res
 ) {
   const product = new Product({
     _id: mongoose.Schema.Types.ObjectId,
@@ -81,6 +82,10 @@ async function postProduct(
     .then(result => {
       console.log("posted to Mongo");
       console.log(result);
+      res.status(200).send("posted");
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).send("error");
+    });
 }
