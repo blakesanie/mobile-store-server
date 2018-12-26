@@ -79,7 +79,7 @@ async function postProduct(
   res
 ) {
   const product = new Product({
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: new mongoose.Types.ObjectId(),
     name: name,
     price: price,
     amazonUrl: amazonUrl,
