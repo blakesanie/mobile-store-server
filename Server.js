@@ -26,11 +26,15 @@ mongoose.connect(
   { useNewUrlParser: true, dbName: "storeIndex" }
 );
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) =>
+  res
+    .status(200)
+    .send("endpoints: /getproductsbycat/:category, /getproductbyid/:id")
+);
 
 app.get("/getproductsbycat/:category", (req, res) => {
   var category = req.params.category;
-  Product.find({ category: category }, "_id name minPrice thumbUrl")
+  Product.find({ category: category }, "name price thumbUrl amazonUrl")
     .exec()
     .then(docs => {
       if (docs.length == 0) {
