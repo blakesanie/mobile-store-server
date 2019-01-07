@@ -29,7 +29,9 @@ mongoose.connect(
 app.get("/", (req, res) =>
   res
     .status(200)
-    .send("endpoints: /getproductsbycat/:category, /getproductbyid/:id")
+    .send(
+      "endpoints: /getproductsbycat/:category/:sortBy/:order, /getgifts/:sortBy/:order, /getproductbyid/:id"
+    )
 );
 
 app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
@@ -39,6 +41,33 @@ app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
   Product.countDocuments({ category: category }, function(err, count) {
     if (err) throw err;
     Product.find({ category: category }, "name price thumbUrl amazonUrl")
+      .sort(sort)
+      .exec()
+      .then(docs => {
+        if (docs.length == 0) {
+          res.status(500).json({ error: "no products found" });
+        } else {
+          //var docArray = sortDocs(docs, req.params.sortingAlgo || "alphabetical");
+          var out = {
+            count: count,
+            products: docs //docArray
+          };
+          res.status(200).json(out);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+  });
+});
+
+app.get("/getgifts/:sortBy/:order", (req, res) => {
+  var sort = {};
+  sort[req.params.sortBy] = req.params.order;
+  Product.countDocuments({ isGift: true }, function(err, count) {
+    if (err) throw err;
+    Product.find({ isGift: true }, "name price thumbUrl amazonUrl")
       .sort(sort)
       .exec()
       .then(docs => {
