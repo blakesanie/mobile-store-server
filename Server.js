@@ -32,16 +32,23 @@ app.get("/", (req, res) =>
     .send("endpoints: /getproductsbycat/:category, /getproductbyid/:id")
 );
 
-app.get("/getproductsbycat/:category/:sortingAlgo", (req, res) => {
+app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
   var category = req.params.category;
+  var sort = {};
+  sort[req.params.sortBy] = req.params.order;
   Product.find({ category: category }, "name price thumbUrl amazonUrl")
+    .sort(sort)
     .exec()
     .then(docs => {
       if (docs.length == 0) {
         res.status(500).json({ error: "no products found" });
       } else {
-        docs = sortDocs(docs, req.params.sortingAlgo);
-        res.status(200).json(docs);
+        //var docArray = sortDocs(docs, req.params.sortingAlgo || "alphabetical");
+        var out = {
+          count: docs.length,
+          products: docs //docArray
+        };
+        res.status(200).json(out);
       }
     })
     .catch(err => {
