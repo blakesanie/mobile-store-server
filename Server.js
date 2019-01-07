@@ -36,7 +36,7 @@ app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
   var category = req.params.category;
   var sort = {};
   sort[req.params.sortBy] = req.params.order;
-  Product.count({ category: category }, function(err, count) {
+  Product.countDocuments({ category: category }, function(err, count) {
     if (err) throw err;
     Product.find({ category: category }, "name price thumbUrl amazonUrl")
       .sort(sort)
