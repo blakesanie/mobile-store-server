@@ -32,7 +32,7 @@ app.get("/", (req, res) =>
     .send("endpoints: /getproductsbycat/:category, /getproductbyid/:id")
 );
 
-app.get("/getproductsbycat/:category", (req, res) => {
+app.get("/getproductsbycat/:category/:sortingAlgo", (req, res) => {
   var category = req.params.category;
   Product.find({ category: category }, "name price thumbUrl amazonUrl")
     .exec()
@@ -40,6 +40,7 @@ app.get("/getproductsbycat/:category", (req, res) => {
       if (docs.length == 0) {
         res.status(500).json({ error: "no products found" });
       } else {
+        docs = sortDocs(docs, req.params.sortingAlgo);
         res.status(200).json(docs);
       }
     })
@@ -103,4 +104,20 @@ async function postProduct(
       console.log(err);
       res.status(500).json({ error: err });
     });
+}
+
+function sortDocs(docs, algo) {
+  if (algo == "alphabetical") {
+    return docs.sort(function(a, b) {
+      return a.name.localeCompare(b.name);
+    });
+  } else if (algo == "priceLowToHigh") {
+    return docs.sort(function(a, b) {
+      return a.price - b.price;
+    });
+  } else if (algo == "priceHighToLow") {
+    return docs.sort(function(a, b) {
+      return b.price - a.price;
+    });
+  }
 }
