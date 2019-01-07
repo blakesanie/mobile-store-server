@@ -107,17 +107,17 @@ async function postProduct(
 }
 
 function sortDocs(docs, algo) {
-  if (algo == "alphabetical") {
-    return docs.sort(function(a, b) {
-      return a.name.localeCompare(b.name);
-    });
-  } else if (algo == "priceLowToHigh") {
+  if (algo == "priceLowToHigh") {
     return docs.sort(function(a, b) {
       return a.price - b.price;
     });
-  } else if (algo == "priceHighToLow") {
+  }
+  if (algo == "priceHighToLow") {
     return docs.sort(function(a, b) {
       return b.price - a.price;
     });
   }
+  return docs.sort(function(a, b) {
+    return a.name.localeCompare(b.name);
+  });
 }
