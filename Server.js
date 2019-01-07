@@ -36,25 +36,28 @@ app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
   var category = req.params.category;
   var sort = {};
   sort[req.params.sortBy] = req.params.order;
-  Product.find({ category: category }, "name price thumbUrl amazonUrl")
-    .sort(sort)
-    .exec()
-    .then(docs => {
-      if (docs.length == 0) {
-        res.status(500).json({ error: "no products found" });
-      } else {
-        //var docArray = sortDocs(docs, req.params.sortingAlgo || "alphabetical");
-        var out = {
-          count: docs.length,
-          products: docs //docArray
-        };
-        res.status(200).json(out);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ error: err });
-    });
+  Product.count({ category: category }, function(err, count) {
+    if (err) throw err;
+    Product.find({ category: category }, "name price thumbUrl amazonUrl")
+      .sort(sort)
+      .exec()
+      .then(docs => {
+        if (docs.length == 0) {
+          res.status(500).json({ error: "no products found" });
+        } else {
+          //var docArray = sortDocs(docs, req.params.sortingAlgo || "alphabetical");
+          var out = {
+            count: count,
+            products: docs //docArray
+          };
+          res.status(200).json(out);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+      });
+  });
 });
 
 app.get("/getproductbyid/:id", (req, res) => {
