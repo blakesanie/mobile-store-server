@@ -46,7 +46,7 @@ app.get("/getproductsbycat", (req, res) => {
     Product.find({ category: category }, "name price thumbUrl amazonUrl")
       .sort(sort)
       .skip((page - 1) * 24)
-      .limit(10)
+      .limit(24)
       .exec()
       .then(docs => {
         if (docs.length == 0) {
