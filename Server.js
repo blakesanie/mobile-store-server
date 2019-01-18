@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 //const keys = require("./keys");
-const Product = require("./Product.js");
+const ProductsObj = require("./Product.js");
+const Product = ProductsObj.tech;
+const CoffeeProduct = ProductsObj.coffee;
 const app = express();
 const port = 3000;
 app.listen(process.env.PORT || port, () =>
@@ -34,23 +36,25 @@ app.get("/", (req, res) =>
     )
 );
 
-app.get("/getproductsbycat/:category/:sortBy/:order", (req, res) => {
-  var category = req.params.category;
+app.get("/getproductsbycat", (req, res) => {
+  var { category, sortBy, order, page } = req.query;
+  var category = category;
   var sort = {};
-  sort[req.params.sortBy] = req.params.order;
+  sort[sortBy] = order;
   Product.countDocuments({ category: category }, function(err, count) {
     if (err) throw err;
     Product.find({ category: category }, "name price thumbUrl amazonUrl")
       .sort(sort)
+      .skip((page - 1) * 24)
+      .limit(10)
       .exec()
       .then(docs => {
         if (docs.length == 0) {
           res.status(500).json({ error: "no products found" });
         } else {
-          //var docArray = sortDocs(docs, req.params.sortingAlgo || "alphabetical");
           var out = {
             count: count,
-            products: docs //docArray
+            products: docs
           };
           res.status(200).json(out);
         }
@@ -143,20 +147,4 @@ async function postProduct(
       console.log(err);
       res.status(500).json({ error: err });
     });
-}
-
-function sortDocs(docs, algo) {
-  if (algo == "priceLowToHigh") {
-    return docs.sort(function(a, b) {
-      return a.price - b.price;
-    });
-  }
-  if (algo == "priceHighToLow") {
-    return docs.sort(function(a, b) {
-      return b.price - a.price;
-    });
-  }
-  return docs.sort(function(a, b) {
-    return a.name.localeCompare(b.name);
-  });
 }
