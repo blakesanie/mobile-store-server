@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "express": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "price-finder": "^5.0.0"
   }
 }

@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const ProductsObj = require("./Product.js");
 const Product = ProductsObj.tech;
 const CoffeeProduct = ProductsObj.coffee;
+const PriceFinder = require("price-finder");
+const priceFinder = new PriceFinder();
 const app = express();
 const port = 3000;
 app.listen(process.env.PORT || port, () =>
@@ -28,13 +30,19 @@ mongoose.connect(
   { useNewUrlParser: true, dbName: "storeIndex" }
 );
 
-app.get("/", (req, res) =>
+app.get("/", async (req, res) => {
+  // await priceFinder.findItemPrice(
+  //   "https://www.amazon.com/gp/product/B077CZM19N?pf_rd_p=c2945051-950f-485c-b4df-15aac5223b10&pf_rd_r=E49SDRCTZWBXR3VKKYWG",
+  //   function(err, value) {
+  //     res.json(value);
+  //   }
+  // );
   res
     .status(200)
     .send(
       "endpoints: /getproductsbycat/:category/:sortBy/:order, /getgifts/:sortBy/:order, /getproductbyid/:id"
-    )
-);
+    );
+});
 
 app.get("/getproductsbycat", (req, res) => {
   var { category, sortBy, order, page } = req.query;
@@ -110,9 +118,13 @@ app.get("/getproductbyid/:id", (req, res) => {
     });
 });
 
-app.get("/postproduct", function(req, res) {
+app.get("/postproduct", async function(req, res) {
   //res.status(200).send("posted");
   var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
+  await priceFinder.findItemPrice(amazonUrl, function(err, value) {
+    if (err) console.log(err);
+    price = value;
+  });
   postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
 });
 
