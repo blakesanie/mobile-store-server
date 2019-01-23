@@ -123,9 +123,10 @@ app.get("/postproduct", async function(req, res) {
   var { name, cat, thumbUrl, amazonUrl, price, isGift, tags } = req.query;
   await priceFinder.findItemPrice(amazonUrl, function(err, value) {
     if (err) console.log(err);
+    console.log(value);
     price = value;
+    postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
   });
-  postProduct(name, cat, thumbUrl, amazonUrl, price, isGift, tags, res);
 });
 
 async function postProduct(
